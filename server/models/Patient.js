@@ -6,7 +6,7 @@ const PatientSchema = new mongoose.Schema({
     ethnicity: String,
     gender: String,
     isDeath: Boolean,
-    personId: Number,
+    personID: Number,
     race: String
 })
 

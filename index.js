@@ -7,7 +7,7 @@ const app = express();
 const mongoose = require('mongoose');
 const { MONGO_URI, PORT } = process.env;
 
-const { patientRouter } = require('./server/routes');
+const { patientRouter, statRouter } = require('./server/routes');
 
 const server = async () => {
     try {
@@ -16,13 +16,13 @@ const server = async () => {
         console.log('MongoDB connected');
 
         // middleware
-        app.use(express.json());
         app.all('/*', (req, res, next) => {
             res.header("Access-Control-Allow-Origin", "*");
-            res.header("Access-Control-Allow-Headers", "X-Requested-With");
             next();
         });
+        app.use(express.json());
         app.use('/patient', patientRouter);
+        app.use('/stat', statRouter);
 
         // port
         app.listen(PORT, () => console.log(`server listening on port ${PORT}`));
