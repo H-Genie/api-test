@@ -5,17 +5,58 @@ import './App.css';
 
 const App = () => {
     useEffect(() => {
-        callGetPatientListAPI();
+        callGetPatientListAPI(10, 1);
     }, []);
 
     const [patientList, setPatientList] = useState(null);
-    const callGetPatientListAPI = async () => {
-        const response = await getPatientList()
-        setPatientList(response)
+    const [totalLength, setTotalLength] = useState(null);
+    const [length, setLength] = useState(10);
+    const [totalPage, setTotalPage] = useState(totalLength / length);
+    const [page, setPage] = useState(1);
+    const [shownPaging, setShownPaging] = useState(Math.floor((page - 1) / 10) * 10);
+
+    const callGetPatientListAPI = async (length, page) => {
+        const response = await getPatientList(length, page);
+        setPatientList(response.patients);
+        setTotalLength(response.totalLength);
+        setPage(response.page);
     }
 
+    const pagination = () => {
+        let arr = [];
+        shownPaging !== 0 && arr.push(
+            <span
+                onClick={() => setShownPaging(shownPaging - 10)}
+                style={{ marginRight: '10px', cursor: 'pointer' }}
+            >
+                ←
+            </span>
+        )
+        for (let i = shownPaging; i < shownPaging + 10; i++) {
+            arr.push(
+                <span
+                    key={i}
+                    onClick={() => callGetPatientListAPI(length, i + 1)}
+                    style={{ marginRight: '10px', cursor: 'pointer' }}
+                >
+                    {i + 1}
+                </span>
+            );
+        }
+        shownPaging + 10 < totalLength / length && arr.push(
+            <span
+                onClick={() => setShownPaging(shownPaging + 10)}
+                style={{ cursor: 'pointer' }}
+            >
+                →
+            </span>
+        )
+        return arr;
+    };
+    console.log(shownPaging, totalLength / length)
+
     return (
-        <>
+        <div>
             <table>
                 <thead>
                     <tr>
@@ -32,7 +73,7 @@ const App = () => {
                 <tbody>
                     {
                         patientList &&
-                        patientList.patients.map((patient, index) => (
+                        patientList.map((patient, index) => (
                             <tr key={index}>
                                 <td>{patient.personID}</td>
                                 <td>{patient.age}</td>
@@ -47,7 +88,9 @@ const App = () => {
                 </tbody>
 
             </table>
-        </>
+
+            <div>{pagination()}</div>
+        </div>
     )
 }
 

@@ -3,7 +3,7 @@ import axios from 'axios';
 const host = "http://localhost:5000";
 
 export const getPatientList = (length, page) => {
-    return axios.get(`${host}/patient`)
+    return axios.get(`${host}/patient?length=${length}&page=${page}`)
         .then(res => res.data)
         .catch(e => console.log(e));
 }

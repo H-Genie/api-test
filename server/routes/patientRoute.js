@@ -11,8 +11,9 @@ patientRouter.get('/', async (req, res) => {
             // .sort()
             .skip(length * page)
             .limit(length);
+        const totalLength = await Patient.find({}).countDocuments();
 
-        return res.send({ patients, page: page + 1, totalLength: patients.length });
+        return res.send({ patients, page: page + 1, totalLength });
     } catch (err) {
         console.log(err);
         return res.status(500).send({ error: err.message });
