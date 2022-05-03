@@ -17,10 +17,14 @@ const App = () => {
 
     const callGetPatientListAPI = async (length, page) => {
         const response = await getPatientList(length, page);
-        setPatientList(response.patients);
-        setTotalLength(response.totalLength);
-        setPage(response.page);
+        Promise.all([
+            setPatientList(response.patients),
+            setTotalLength(response.totalLength),
+            setPage(response.page),
+            // setTotalPage(response.totalLength / length)
+        ])
     }
+    console.log(totalPage)
 
     const pagination = () => {
         let arr = [];
@@ -53,13 +57,25 @@ const App = () => {
         )
         return arr;
     };
-    console.log(shownPaging, totalLength / length)
+
+    const changeLength = e => {
+        e.preventDefault();
+        setLength(e.target[0].value);
+        callGetPatientListAPI(e.target[0].value, 1);
+        // pagination();
+    }
+
+    const validatNumber = e => {
+        let onlyNumber = e.target.value.replace(/[^0-9]/g, '');
+        setLength(onlyNumber && parseInt(onlyNumber));
+    }
 
     return (
         <div>
             <table>
                 <thead>
                     <tr>
+                        <th>No.</th>
                         <th>ID</th>
                         <th>Age</th>
                         <th>Birthday</th>
@@ -75,6 +91,7 @@ const App = () => {
                         patientList &&
                         patientList.map((patient, index) => (
                             <tr key={index}>
+                                <td>{index + 1}</td>
                                 <td>{patient.personID}</td>
                                 <td>{patient.age}</td>
                                 <td>{dayjs(patient.birthDatetime).format("YYYY-MM-DD")}</td>
@@ -90,6 +107,10 @@ const App = () => {
             </table>
 
             <div>{pagination()}</div>
+            <form onSubmit={changeLength}>
+                <input type="text" onChange={validatNumber} value={length} />
+                <button type='submit'>변경</button>
+            </form>
         </div>
     )
 }
