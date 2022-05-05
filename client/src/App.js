@@ -11,32 +11,31 @@ const App = () => {
     const [patientList, setPatientList] = useState(null);
     const [totalLength, setTotalLength] = useState(null);
     const [length, setLength] = useState(10);
-    const [totalPage, setTotalPage] = useState(totalLength / length);
     const [page, setPage] = useState(1);
     const [shownPaging, setShownPaging] = useState(Math.floor((page - 1) / 10) * 10);
+    const totalPage = totalLength && totalLength / length;
 
     const callGetPatientListAPI = async (length, page) => {
         const response = await getPatientList(length, page);
         Promise.all([
             setPatientList(response.patients),
             setTotalLength(response.totalLength),
-            setPage(response.page),
-            // setTotalPage(response.totalLength / length)
+            setPage(response.page)
         ])
     }
-    console.log(totalPage)
 
     const pagination = () => {
         let arr = [];
         shownPaging !== 0 && arr.push(
             <span
+                key='prev'
                 onClick={() => setShownPaging(shownPaging - 10)}
                 style={{ marginRight: '10px', cursor: 'pointer' }}
             >
                 ←
             </span>
         )
-        for (let i = shownPaging; i < shownPaging + 10; i++) {
+        for (let i = shownPaging; i < Math.min(shownPaging + 10, totalPage); i++) {
             arr.push(
                 <span
                     key={i}
@@ -49,6 +48,7 @@ const App = () => {
         }
         shownPaging + 10 < totalLength / length && arr.push(
             <span
+                key='next'
                 onClick={() => setShownPaging(shownPaging + 10)}
                 style={{ cursor: 'pointer' }}
             >
@@ -62,7 +62,6 @@ const App = () => {
         e.preventDefault();
         setLength(e.target[0].value);
         callGetPatientListAPI(e.target[0].value, 1);
-        // pagination();
     }
 
     const validatNumber = e => {

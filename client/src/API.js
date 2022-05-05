@@ -1,6 +1,9 @@
+/* eslint no-restricted-globals: ["off"] */
 import axios from 'axios';
 
-const host = "http://localhost:5000";
+const host = process.env.NODE_ENV === 'development' ?
+    process.env.REACT_APP_HOST :
+    location.origin;
 
 export const getPatientList = (length, page) => {
     return axios.get(`${host}/patient?length=${length}&page=${page}`)
