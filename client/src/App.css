@@ -8,3 +8,39 @@ td {
     text-align: center;
     padding: 1rem;
 }
+
+ul {
+    margin: 0;
+}
+
+.table-container {
+    width: fit-content;
+}
+
+.table-container table {
+    width: fit-content;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px auto 0;
+}
+
+.pagination form {
+    display: flex;
+    align-items: center;
+}
+
+.pagination input {
+    width: 53px;
+    height: 18px;
+    text-align: center;
+}
+
+.pagination li {
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+    cursor: pointer;
+}

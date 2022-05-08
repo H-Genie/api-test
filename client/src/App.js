@@ -10,10 +10,12 @@ const App = () => {
 
     const [patientList, setPatientList] = useState(null);
     const [totalLength, setTotalLength] = useState(null);
-    const [length, setLength] = useState(10);
     const [page, setPage] = useState(1);
+
+    const [length, setLength] = useState(10);
     const [shownPaging, setShownPaging] = useState(Math.floor((page - 1) / 10) * 10);
     const totalPage = totalLength && totalLength / length;
+    const [onlyNumber, setOnlyNumber] = useState(length);
 
     const callGetPatientListAPI = async (length, page) => {
         const response = await getPatientList(length, page);
@@ -26,51 +28,54 @@ const App = () => {
 
     const pagination = () => {
         let arr = [];
+
         shownPaging !== 0 && arr.push(
-            <span
+            <li
                 key='prev'
                 onClick={() => setShownPaging(shownPaging - 10)}
-                style={{ marginRight: '10px', cursor: 'pointer' }}
             >
                 ←
-            </span>
+            </li>
         )
+
         for (let i = shownPaging; i < Math.min(shownPaging + 10, totalPage); i++) {
             arr.push(
-                <span
+                <li
                     key={i}
                     onClick={() => callGetPatientListAPI(length, i + 1)}
-                    style={{ marginRight: '10px', cursor: 'pointer' }}
                 >
                     {i + 1}
-                </span>
+                </li>
             );
         }
+
         shownPaging + 10 < totalLength / length && arr.push(
-            <span
+            <li
                 key='next'
                 onClick={() => setShownPaging(shownPaging + 10)}
-                style={{ cursor: 'pointer' }}
             >
                 →
-            </span>
+            </li>
         )
+
         return arr;
     };
 
     const changeLength = e => {
         e.preventDefault();
-        setLength(e.target[0].value);
-        callGetPatientListAPI(e.target[0].value, 1);
+
+        let newLenth;
+        if (!e.target[0].value || e.target[0].value === '0') newLenth = length;
+        else newLenth = parseInt(e.target[0].value);
+
+        setLength(newLenth);
+        callGetPatientListAPI(newLenth, 1);
     }
 
-    const validatNumber = e => {
-        let onlyNumber = e.target.value.replace(/[^0-9]/g, '');
-        setLength(onlyNumber && parseInt(onlyNumber));
-    }
+    const validatNumber = e => setOnlyNumber(Math.min(e.target.value.replace(/[^0-9]/g, ''), totalLength));
 
     return (
-        <div>
+        <div className='table-container'>
             <table>
                 <thead>
                     <tr>
@@ -105,11 +110,15 @@ const App = () => {
 
             </table>
 
-            <div>{pagination()}</div>
-            <form onSubmit={changeLength}>
-                <input type="text" onChange={validatNumber} value={length} />
-                <button type='submit'>변경</button>
-            </form>
+            <div className='pagination'>
+                <form onSubmit={changeLength}>
+                    <input type="text" onChange={validatNumber} value={onlyNumber} />
+                    <button type='submit'>변경</button>
+                </form>
+                <ul>
+                    {pagination()}
+                </ul>
+            </div>
         </div>
     )
 }
