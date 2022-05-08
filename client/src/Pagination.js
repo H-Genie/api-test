@@ -4,10 +4,12 @@ const Pagination = (props) => {
     const {
         callGetPatientListAPI,
         totalLength,
-        page
+        page,
+        length,
+        setLength,
+        order_column
     } = props;
 
-    const [length, setLength] = useState(10);
     const [newLength, setNewLength] = useState(length);
     const [shownPagination, setShownPagination] = useState(Math.floor((page - 1) / 10) * 10);
 
@@ -19,7 +21,7 @@ const Pagination = (props) => {
         else value = parseInt(value);
 
         setLength(value);
-        callGetPatientListAPI(value, 1);
+        callGetPatientListAPI(value, 1, order_column);
     }
 
     const validatNumber = e => setNewLength(Math.min(e.target.value.replace(/[^0-9]/g, ''), totalLength));
@@ -33,7 +35,7 @@ const Pagination = (props) => {
                 key='prev'
                 onClick={() => {
                     setShownPagination(shownPagination - 10);
-                    callGetPatientListAPI(length, shownPagination - 9);
+                    callGetPatientListAPI(length, shownPagination - 9, order_column);
                 }}
             >
                 ←
@@ -44,7 +46,7 @@ const Pagination = (props) => {
             arr.push(
                 <li
                     key={i}
-                    onClick={() => callGetPatientListAPI(length, i + 1)}
+                    onClick={() => callGetPatientListAPI(length, i + 1, order_column)}
                     style={{
                         color: i + 1 === page ? 'blue' : null,
                         textDecoration: i + 1 === page ? 'underline' : null
@@ -60,7 +62,7 @@ const Pagination = (props) => {
                 key='next'
                 onClick={() => {
                     setShownPagination(shownPagination + 10);
-                    callGetPatientListAPI(length, shownPagination + 11);
+                    callGetPatientListAPI(length, shownPagination + 11, order_column);
                 }}
             >
                 →

@@ -5,8 +5,8 @@ const host = process.env.NODE_ENV === 'development' ?
     process.env.REACT_APP_HOST :
     location.origin;
 
-export const getPatientList = (length, page) => {
-    return axios.get(`${host}/patient?length=${length}&page=${page}`)
+export const getPatientList = (length, page, order_column) => {
+    return axios.get(`${host}/patient?length=${length}&page=${page}&order_column=${order_column}`)
         .then(res => res.data)
         .catch(e => console.log(e));
 }
