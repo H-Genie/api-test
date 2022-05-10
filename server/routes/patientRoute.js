@@ -4,12 +4,16 @@ const { Patient, Brief, Condition, Drug, Visit } = require('../models');
 
 patientRouter.get('/', async (req, res) => {
     try {
-        const length = req.query.length;
-        const page = req.query.page - 1 || 0;
-        const order_column = req.query.order_column;
+        let {
+            length,
+            page,
+            order_column,
+            order_desc = -1
+        } = req.query;
+        page = page !== 0 ? parseInt(page) - 1 : page = 0;
 
-        let patients = await Patient.find({})
-            .sort(order_column)
+        const patients = await Patient.find({})
+            .sort({ [order_column]: order_desc })
             .skip(length * page)
             .limit(length);
         const totalLength = await Patient.find({}).countDocuments();

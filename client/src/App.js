@@ -15,9 +15,10 @@ const App = () => {
 
     const [length, setLength] = useState(10);
     const [order_column, setOrder_column] = useState(null);
+    const [order_desc, setOrder_desc] = useState(true);
 
     const callGetPatientListAPI = async (length, page, order_column) => {
-        const response = await getPatientList(length, page, order_column);
+        const response = await getPatientList(length, page, order_column, order_desc);
         Promise.all([
             setPatientList(response.patients),
             setTotalLength(response.totalLength),
@@ -26,8 +27,10 @@ const App = () => {
     }
 
     const order = param => {
-        callGetPatientListAPI(length, 1, param);
         setOrder_column(param);
+        param === order_column ? setOrder_desc(!order_desc) : setOrder_desc(true)
+
+        callGetPatientListAPI(length, 1, param, order_desc);
     }
 
     return (
@@ -36,7 +39,9 @@ const App = () => {
                 <thead>
                     <tr>
                         <th>No.</th>
-                        <th onClick={() => order('personID')}>ID</th>
+                        <th onClick={() => order('personID')}>
+                            ID
+                        </th>
                         <th onClick={() => order('age')}>Age</th>
                         <th onClick={() => order('birthDatetime')}>Birthday</th>
                         <th onClick={() => order('gender')}>Gender</th>
@@ -73,6 +78,7 @@ const App = () => {
                 length={length}
                 setLength={setLength}
                 order_column={order_column}
+                order_desc={order_desc}
             />
         </div>
     )
