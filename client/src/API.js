@@ -6,7 +6,7 @@ const host = process.env.NODE_ENV === 'development' ?
     location.origin;
 
 export const getPatientList = (length, page, order_column, order_desc) => {
-    return axios.get(`${host}/patient?length=${length}&page=${page}&order_column=${order_column}&order_desc=${order_desc ? -1 : 1}`)
+    return axios.get(`${host}/patient?length=${length}&page=${page - 1}&order_column=${order_column}&order_desc=${order_desc ? -1 : 1}`)
         .then(res => res.data)
         .catch(e => console.log(e));
 }

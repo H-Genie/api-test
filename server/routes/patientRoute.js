@@ -4,13 +4,12 @@ const { Patient, Brief, Condition, Drug, Visit } = require('../models');
 
 patientRouter.get('/', async (req, res) => {
     try {
-        let {
+        const {
             length,
             page,
             order_column,
             order_desc = -1
         } = req.query;
-        page = page !== 0 ? parseInt(page) - 1 : page = 0;
 
         const patients = await Patient.find({})
             .sort({ [order_column]: order_desc })
@@ -18,7 +17,7 @@ patientRouter.get('/', async (req, res) => {
             .limit(length);
         const totalLength = await Patient.find({}).countDocuments();
 
-        return res.send({ patients, page: page + 1, totalLength });
+        return res.send({ patients, page: parseInt(page) + 1, totalLength });
     } catch (err) {
         console.log(err);
         return res.status(500).send({ error: err.message });
