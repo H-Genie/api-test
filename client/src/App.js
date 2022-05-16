@@ -18,7 +18,7 @@ const App = () => {
     const [order_column, setOrder_column] = useState(null);
     const [order_desc, setOrder_desc] = useState(true);
 
-    const callGetPatientListAPI = async (length, page, order_column) => {
+    const callGetPatientListAPI = async (length, page, order_column, order_desc) => {
         const response = await getPatientList(length, page, order_column, order_desc);
         Promise.all([
             setPatientList(response.patients),
@@ -27,14 +27,21 @@ const App = () => {
         ])
     }
 
-    const sortColumn = column => {
+    const sortColumn = (column, desc) => {
         setOrder_column(column);
-        column === order_column ? setOrder_desc(!order_desc) : setOrder_desc(true);
-
-        // 두번쨰 클릭에서 !prev가 작동하지 않음
-        console.log(column, order_desc)
-        callGetPatientListAPI(length, 1, column, order_desc);
+        setOrder_desc(desc);
+        callGetPatientListAPI(length, 1, column, desc);
     }
+
+    const columnArr = [
+        'personID',
+        'age',
+        'birthDatetime',
+        'gender',
+        'ethnicity',
+        'race',
+        'isDeatth'
+    ]
 
     return (
         <div className='table-container'>
@@ -42,23 +49,39 @@ const App = () => {
                 <thead>
                     <tr>
                         <th>No.</th>
-                        <th onClick={() => sortColumn('personID')}>
-                            ID
-                        </th>
-                        <th onClick={() => sortColumn('age')}>Age</th>
-                        <th onClick={() => sortColumn('birthDatetime')}>Birthday</th>
-                        <th onClick={() => sortColumn('gender')}>Gender</th>
-                        <th onClick={() => sortColumn('ethnicity')}>Ethnicity</th>
-                        <th onClick={() => sortColumn('race')}>Race</th>
-                        <th onClick={() => sortColumn('isDeath')}>isDeath</th>
+                        {columnArr.map(column => <th key={column}>{column}</th>)}
                     </tr>
+
+                    <tr>
+                        <td></td>
+                        {
+                            columnArr.map(column => (
+                                <td key={column}>
+                                    <span onClick={() => sortColumn(column, true)}>
+                                        {
+                                            order_column === column && order_desc === true ?
+                                                '▼' : '▽'
+                                        }
+                                    </span>
+                                    <span onClick={() => sortColumn(column, false)}>
+                                        {
+                                            order_column === column && order_desc === false ?
+                                                '▲' : '△'
+                                        }
+                                    </span>
+                                </td>
+                            ))
+                        }
+                    </tr>
+
+
                 </thead>
 
                 <tbody>
                     {
                         patientList &&
                         patientList.map((patient, index) => (
-                            <tr key={index} onClick={e => console.log(patient.personID)}>
+                            <tr key={patient.personID} onClick={e => console.log(patient.personID)}>
                                 <td>{index + 1}</td>
                                 <td>{patient.personID}</td>
                                 <td>{patient.age}</td>

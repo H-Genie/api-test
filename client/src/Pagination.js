@@ -46,7 +46,7 @@ const Pagination = (props) => {
         for (let i = shownPagination; i < Math.min(shownPagination + 10, lastPage); i++) {
             arr.push(
                 <li
-                    key={i}
+                    key={i + 1}
                     onClick={() => callGetPatientListAPI(length, i + 1, order_column, order_desc)}
                     style={{
                         color: i + 1 === page ? 'blue' : null,
