@@ -8,14 +8,27 @@ patientRouter.get('/', async (req, res) => {
             length,
             page,
             order_column,
-            order_desc = -1
+            order_desc = -1,
+            gender,
+            race,
+            ethnicity,
+            age_min,
+            age_max,
+            death
         } = req.query;
 
-        const patients = await Patient.find({})
+        let obj = {
+            [gender !== 'null' && 'gender']: gender,
+            [race !== 'null' && 'race']: race,
+            [ethnicity !== 'null' && 'ethnicity']: ethnicity,
+            [death !== 'null' && 'isDeath']: death,
+        }
+
+        const patients = await Patient.find(obj)
             .sort({ [order_column]: order_desc })
             .skip(length * page)
             .limit(length);
-        const totalLength = await Patient.find({}).countDocuments();
+        const totalLength = await Patient.find(obj).countDocuments();
 
         return res.send({ patients, page: parseInt(page) + 1, totalLength });
     } catch (err) {

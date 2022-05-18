@@ -20,7 +20,7 @@ const App = () => {
 
     const callGetPatientListAPI = async (length, page, order_column, order_desc) => {
         const response = await getPatientList(length, page, order_column, order_desc);
-        Promise.all([
+        response && Promise.all([
             setPatientList(response.patients),
             setTotalLength(response.totalLength),
             setPage(response.page)
@@ -44,69 +44,70 @@ const App = () => {
     ]
 
     return (
-        <div className='table-container'>
-            <table>
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        {columnArr.map(column => <th key={column}>{column}</th>)}
-                    </tr>
+        !patientList ? 'Loading...' :
+            <div className='table-container'>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            {columnArr.map(column => <th key={column}>{column}</th>)}
+                        </tr>
 
-                    <tr>
-                        <td></td>
+                        <tr>
+                            <td></td>
+                            {
+                                columnArr.map(column => (
+                                    <td key={column}>
+                                        <span onClick={() => sortColumn(column, true)}>
+                                            {
+                                                order_column === column && order_desc === true ?
+                                                    '▼' : '▽'
+                                            }
+                                        </span>
+                                        <span onClick={() => sortColumn(column, false)}>
+                                            {
+                                                order_column === column && order_desc === false ?
+                                                    '▲' : '△'
+                                            }
+                                        </span>
+                                    </td>
+                                ))
+                            }
+                        </tr>
+
+
+                    </thead>
+
+                    <tbody>
                         {
-                            columnArr.map(column => (
-                                <td key={column}>
-                                    <span onClick={() => sortColumn(column, true)}>
-                                        {
-                                            order_column === column && order_desc === true ?
-                                                '▼' : '▽'
-                                        }
-                                    </span>
-                                    <span onClick={() => sortColumn(column, false)}>
-                                        {
-                                            order_column === column && order_desc === false ?
-                                                '▲' : '△'
-                                        }
-                                    </span>
-                                </td>
+                            patientList &&
+                            patientList.map((patient, index) => (
+                                <tr key={patient.personID} onClick={e => console.log(patient.personID)}>
+                                    <td>{index + 1}</td>
+                                    <td>{patient.personID}</td>
+                                    <td>{patient.age}</td>
+                                    <td>{dayjs(patient.birthDatetime).format("YYYY-MM-DD")}</td>
+                                    <td>{patient.gender}</td>
+                                    <td>{patient.ethnicity}</td>
+                                    <td>{patient.race}</td>
+                                    <td>{patient.isDeath ? "Y" : "N"}</td>
+                                </tr>
                             ))
                         }
-                    </tr>
+                    </tbody>
 
+                </table>
 
-                </thead>
-
-                <tbody>
-                    {
-                        patientList &&
-                        patientList.map((patient, index) => (
-                            <tr key={patient.personID} onClick={e => console.log(patient.personID)}>
-                                <td>{index + 1}</td>
-                                <td>{patient.personID}</td>
-                                <td>{patient.age}</td>
-                                <td>{dayjs(patient.birthDatetime).format("YYYY-MM-DD")}</td>
-                                <td>{patient.gender}</td>
-                                <td>{patient.ethnicity}</td>
-                                <td>{patient.race}</td>
-                                <td>{patient.isDeath ? "Y" : "N"}</td>
-                            </tr>
-                        ))
-                    }
-                </tbody>
-
-            </table>
-
-            <Pagination
-                callGetPatientListAPI={callGetPatientListAPI}
-                totalLength={totalLength}
-                page={page}
-                length={length}
-                setLength={setLength}
-                order_column={order_column}
-                order_desc={order_desc}
-            />
-        </div>
+                <Pagination
+                    callGetPatientListAPI={callGetPatientListAPI}
+                    totalLength={totalLength}
+                    page={page}
+                    length={length}
+                    setLength={setLength}
+                    order_column={order_column}
+                    order_desc={order_desc}
+                />
+            </div>
     )
 }
 
