@@ -58,7 +58,7 @@ const Pagination = (props) => {
             );
         }
 
-        shownPagination + 10 <= lastPage && arr.push(
+        shownPagination + 10 < lastPage && arr.push(
             <li
                 key='next'
                 onClick={() => {
