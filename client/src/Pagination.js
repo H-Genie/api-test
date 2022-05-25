@@ -12,7 +12,7 @@ const Pagination = (props) => {
     } = props;
 
     const [newLength, setNewLength] = useState(length);
-    const [shownPagination, setShownPagination] = useState(Math.floor((page - 1) / 10) * 10);
+    const [shownPagination, setShownPagination] = useState(0);
 
     const changeLength = e => {
         e.preventDefault();
@@ -23,6 +23,7 @@ const Pagination = (props) => {
 
         setLength(value);
         callGetPatientListAPI(value, 1, order_column, order_desc);
+        setShownPagination(0);
     }
 
     const validatNumber = e => setNewLength(Math.min(e.target.value.replace(/[^0-9]/g, ''), totalLength));
@@ -47,7 +48,7 @@ const Pagination = (props) => {
             arr.push(
                 <li
                     key={i + 1}
-                    onClick={() => callGetPatientListAPI(length, i + 1, order_column, order_desc)}
+                    onClick={() => { callGetPatientListAPI(length, i + 1, order_column, order_desc) }}
                     style={{
                         color: i + 1 === page ? 'blue' : null,
                         textDecoration: i + 1 === page ? 'underline' : null
