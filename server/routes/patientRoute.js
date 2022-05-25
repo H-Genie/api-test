@@ -8,7 +8,7 @@ patientRouter.get('/', async (req, res) => {
             length,
             page,
             order_column,
-            order_desc = -1,
+            order_desc,
             gender,
             race,
             ethnicity,
@@ -18,10 +18,12 @@ patientRouter.get('/', async (req, res) => {
         } = req.query;
 
         let obj = {
-            [gender !== 'null' && 'gender']: gender,
-            [race !== 'null' && 'race']: race,
-            [ethnicity !== 'null' && 'ethnicity']: ethnicity,
-            [death !== 'null' && 'isDeath']: death,
+            [gender !== undefined && 'gender']: gender,
+            [race !== undefined && 'race']: race,
+            [ethnicity !== undefined && 'ethnicity']: ethnicity,
+            [age_min !== undefined && 'age_min']: age_min,
+            [age_max !== undefined && 'age_max']: age_max,
+            [death !== undefined && 'death']: death
         }
 
         const patients = await Patient.find(obj)
