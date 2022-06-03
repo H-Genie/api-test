@@ -1,4 +1,5 @@
 module.exports = {
     ...require('./patientRoute'),
-    ...require('./statRoute')
+    ...require('./statRoute'),
+    ...require('./listRoute')
 }

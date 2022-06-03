@@ -8,7 +8,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const { MONGO_URI, PORT } = process.env;
 
-const { patientRouter, statRouter } = require('./server/routes');
+const { patientRouter, statRouter, listRouter } = require('./server/routes');
 
 const server = async () => {
     try {
@@ -25,6 +25,7 @@ const server = async () => {
         app.use(express.json());
         app.use('/patient', patientRouter);
         app.use('/stat', statRouter);
+        app.use('/list', listRouter);
 
         // port
         app.listen(PORT, () => console.log(`server listening on port ${PORT}`));

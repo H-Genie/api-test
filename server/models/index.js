@@ -4,5 +4,6 @@ module.exports = {
     ...require('./Condition'),
     ...require('./Drug'),
     ...require('./Visit'),
-    ...require('./Stat')
+    ...require('./Stat'),
+    ...require('./List')
 }
