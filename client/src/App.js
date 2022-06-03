@@ -4,6 +4,8 @@ import { getPatientList } from './API';
 import './App.css';
 import Pagination from './Pagination';
 
+import Filtering from './Filtering';
+
 const App = () => {
     useEffect(() => {
         callGetPatientListAPI(10, 1, null, true);
@@ -46,6 +48,7 @@ const App = () => {
     return (
         !patientList ? 'Loading...' :
             <div className='table-container'>
+                <Filtering />
                 <table>
                     <thead>
                         <tr>
