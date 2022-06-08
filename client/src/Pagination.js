@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import { PaginationContext } from './PaginationContext';
 
-const Pagination = (props) => {
+const Pagination = ({ callGetPatientListAPI }) => {
     const {
-        callGetPatientListAPI,
-        totalLength,
         page,
         length,
         setLength,
         order_column,
-        order_desc
-    } = props;
-
-    const [newLength, setNewLength] = useState(length);
-    const [shownPagination, setShownPagination] = useState(0);
+        order_desc,
+        totalLength,
+        newLength,
+        setNewLength,
+        shownPagination,
+        setShownPagination,
+    } = useContext(PaginationContext);
 
     const changeLength = e => {
         e.preventDefault();

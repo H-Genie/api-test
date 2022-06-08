@@ -1,38 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import dayjs from 'dayjs';
 import { getPatientList } from './API';
 import './App.css';
 import Pagination from './Pagination';
 
 import Filtering from './Filtering';
+import { PaginationContext } from './PaginationContext';
 
 const App = () => {
-    useEffect(() => {
-        callGetPatientListAPI(10, 1, null, true);
-        //eslint-disable-next-line
-    }, []);
+    const {
+        setPage,
+        length,
+        order_column,
+        setOrder_column,
+        order_desc,
+        setOrder_desc,
+        setTotalLength,
+        setShownPagination,
+    } = useContext(PaginationContext);
 
     const [patientList, setPatientList] = useState(null);
-    const [totalLength, setTotalLength] = useState(null);
-    const [page, setPage] = useState(1);
+    const callGetPatientListAPI = useCallback(
+        async (length, page, order_column, order_desc) => {
+            const response = await getPatientList(length, page, order_column, order_desc);
+            response && Promise.all([
+                setPatientList(response.patients),
+                setTotalLength(response.totalLength),
+                setPage(response.page)
+            ]);
+        }, [setPage, setTotalLength]
+    );
 
-    const [length, setLength] = useState(10);
-    const [order_column, setOrder_column] = useState(null);
-    const [order_desc, setOrder_desc] = useState(true);
-
-    const callGetPatientListAPI = async (length, page, order_column, order_desc) => {
-        const response = await getPatientList(length, page, order_column, order_desc);
-        response && Promise.all([
-            setPatientList(response.patients),
-            setTotalLength(response.totalLength),
-            setPage(response.page)
-        ])
-    }
+    useEffect(() => {
+        callGetPatientListAPI(10, 1, null, true);
+    }, [callGetPatientListAPI]);
 
     const sortColumn = (column, desc) => {
         setOrder_column(column);
         setOrder_desc(desc);
         callGetPatientListAPI(length, 1, column, desc);
+        setShownPagination(0);
     }
 
     const columnArr = [
@@ -103,12 +110,6 @@ const App = () => {
 
                 <Pagination
                     callGetPatientListAPI={callGetPatientListAPI}
-                    totalLength={totalLength}
-                    page={page}
-                    length={length}
-                    setLength={setLength}
-                    order_column={order_column}
-                    order_desc={order_desc}
                 />
             </div>
     )

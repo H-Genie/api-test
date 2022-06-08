@@ -1,17 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import RadioBox from './RadioBox';
 import CheckBox from './CheckBox';
+import { PaginationContext } from './PaginationContext';
 import { genders, races, ethnicities, deaths } from './Data';
 
 const Filtering = () => {
-    const [filters, setFilters] = useState({
-        gender: "",
-        race: [],
-        ethnicity: "",
-        age_min: "",
-        age_max: "",
-        death: ""
-    });
+    const {
+        filters,
+        setFilters
+    } = useContext(PaginationContext);
 
     const handleFilters = (paramFilters, category) => {
         setFilters({
@@ -19,7 +16,6 @@ const Filtering = () => {
             [category]: paramFilters
         })
     }
-    console.log(filters)
 
     return (
         <div>

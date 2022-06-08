@@ -7,6 +7,7 @@ const RadioBox = ({ category, list, handleFilters }) => {
                 type="radio"
                 value={item.value}
                 id={item.key}
+                name={category}
             />
             <label htmlFor={item.value}>
                 {item.value}
