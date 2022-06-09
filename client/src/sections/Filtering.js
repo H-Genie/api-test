@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import RadioBox from './RadioBox';
 import CheckBox from './CheckBox';
-import { PaginationContext } from './PaginationContext';
+import { PaginationContext } from '../context/PaginationContext';
 import { genders, races, ethnicities, deaths } from './Data';
 
-const Filtering = () => {
+const Filtering = ({ callGetPatientListAPI }) => {
     const {
         filters,
         setFilters
@@ -14,7 +14,7 @@ const Filtering = () => {
         setFilters({
             ...filters,
             [category]: paramFilters
-        })
+        });
     }
 
     return (

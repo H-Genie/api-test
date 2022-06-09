@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { PaginationContext } from './PaginationContext';
+import { PaginationContext } from './context/PaginationContext';
 
 const Pagination = ({ callGetPatientListAPI }) => {
     const {
@@ -13,6 +13,7 @@ const Pagination = ({ callGetPatientListAPI }) => {
         setNewLength,
         shownPagination,
         setShownPagination,
+        filters
     } = useContext(PaginationContext);
 
     const changeLength = e => {
@@ -23,7 +24,7 @@ const Pagination = ({ callGetPatientListAPI }) => {
         else value = parseInt(value);
 
         setLength(value);
-        callGetPatientListAPI(value, 1, order_column, order_desc);
+        callGetPatientListAPI(value, 1, order_column, order_desc, filters);
         setShownPagination(0);
     }
 
@@ -38,7 +39,7 @@ const Pagination = ({ callGetPatientListAPI }) => {
                 key='prev'
                 onClick={() => {
                     setShownPagination(shownPagination - 10);
-                    callGetPatientListAPI(length, shownPagination - 9, order_column, order_desc);
+                    callGetPatientListAPI(length, shownPagination - 9, order_column, order_desc, filters);
                 }}
             >
                 ←
@@ -49,7 +50,7 @@ const Pagination = ({ callGetPatientListAPI }) => {
             arr.push(
                 <li
                     key={i + 1}
-                    onClick={() => { callGetPatientListAPI(length, i + 1, order_column, order_desc) }}
+                    onClick={() => { callGetPatientListAPI(length, i + 1, order_column, order_desc, filters) }}
                     style={{
                         color: i + 1 === page ? 'blue' : null,
                         textDecoration: i + 1 === page ? 'underline' : null
@@ -65,7 +66,7 @@ const Pagination = ({ callGetPatientListAPI }) => {
                 key='next'
                 onClick={() => {
                     setShownPagination(shownPagination + 10);
-                    callGetPatientListAPI(length, shownPagination + 11, order_column, order_desc);
+                    callGetPatientListAPI(length, shownPagination + 11, order_column, order_desc, filters);
                 }}
             >
                 →

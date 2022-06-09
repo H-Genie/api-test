@@ -10,14 +10,18 @@ export const getPatientList = (
     page,
     order_column,
     order_desc,
-    gender,
-    race,
-    ethnicity,
-    age_min,
-    age_max,
-    death
+    filters
 ) => {
-    return axios.get(`${host}/patient?length=${length}&page=${page - 1}&order_column=${order_column}&order_desc=${order_desc ? -1 : 1}${gender ? '&gender=' + gender : ''}${race ? '&race=' + race : ''}${ethnicity ? '&ethnicity=' + ethnicity : ''}${age_min ? '&age_min=' + age_min : ''}${age_max ? '&age_max=' + age_max : ''}${death ? '&death=' + death : ''}`)
+    const {
+        gender,
+        race,
+        ethnicity,
+        age_min,
+        age_max,
+        death
+    } = filters;
+
+    return axios.get(`${host}/patient?length=${length}&page=${page - 1}&order_column=${order_column}&order_desc=${order_desc ? -1 : 1}${gender ? '&gender=' + gender : ''}${race.length !== 0 ? '&race=' + race : ''}${ethnicity ? '&ethnicity=' + ethnicity : ''}${age_min ? '&age_min=' + age_min : ''}${age_max ? '&age_max=' + age_max : ''}${death ? '&death=' + death : ''}`)
         .then(res => res.data)
         .catch(e => console.log(e));
 }

@@ -1,14 +1,15 @@
 import React, { useEffect, useState, useContext, useCallback } from 'react';
 import dayjs from 'dayjs';
-import { getPatientList } from './API';
+import { getPatientList } from './API/API';
 import './App.css';
 import Pagination from './Pagination';
 
-import Filtering from './Filtering';
-import { PaginationContext } from './PaginationContext';
+import Filtering from './sections/Filtering';
+import { PaginationContext } from './context/PaginationContext';
 
 const App = () => {
     const {
+        page,
         setPage,
         length,
         order_column,
@@ -17,12 +18,13 @@ const App = () => {
         setOrder_desc,
         setTotalLength,
         setShownPagination,
+        filters
     } = useContext(PaginationContext);
 
     const [patientList, setPatientList] = useState(null);
     const callGetPatientListAPI = useCallback(
-        async (length, page, order_column, order_desc) => {
-            const response = await getPatientList(length, page, order_column, order_desc);
+        async (length, page, order_column, order_desc, filters) => {
+            const response = await getPatientList(length, page, order_column, order_desc, filters);
             response && Promise.all([
                 setPatientList(response.patients),
                 setTotalLength(response.totalLength),
@@ -32,13 +34,13 @@ const App = () => {
     );
 
     useEffect(() => {
-        callGetPatientListAPI(10, 1, null, true);
-    }, [callGetPatientListAPI]);
+        callGetPatientListAPI(length, page, order_column, order_desc, filters);
+    }, [callGetPatientListAPI, length, page, order_column, order_desc, filters]);
 
     const sortColumn = (column, desc) => {
         setOrder_column(column);
         setOrder_desc(desc);
-        callGetPatientListAPI(length, 1, column, desc);
+        callGetPatientListAPI(length, 1, column, desc, filters);
         setShownPagination(0);
     }
 
