@@ -9,7 +9,6 @@ import { PaginationContext } from './context/PaginationContext';
 
 const App = () => {
     const {
-        page,
         setPage,
         length,
         order_column,
@@ -34,8 +33,16 @@ const App = () => {
     );
 
     useEffect(() => {
-        callGetPatientListAPI(length, page, order_column, order_desc, filters);
-    }, [callGetPatientListAPI, length, page, order_column, order_desc, filters]);
+        callGetPatientListAPI(length, 1, order_column, order_desc, filters);
+        setShownPagination(0);
+    }, [
+        callGetPatientListAPI,
+        filters,
+        length,
+        order_column,
+        order_desc,
+        setShownPagination
+    ]);
 
     const sortColumn = (column, desc) => {
         setOrder_column(column);

@@ -4,7 +4,7 @@ import CheckBox from './CheckBox';
 import { PaginationContext } from '../context/PaginationContext';
 import { genders, races, ethnicities, deaths } from './Data';
 
-const Filtering = ({ callGetPatientListAPI }) => {
+const Filtering = () => {
     const {
         filters,
         setFilters

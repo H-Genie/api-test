@@ -19,11 +19,11 @@ patientRouter.get('/', async (req, res) => {
 
         let obj = {
             [gender !== undefined && 'gender']: gender,
-            [race !== undefined && 'race']: race,
+            [race !== undefined && 'race']: { $in: race && race.split(',') },
             [ethnicity !== undefined && 'ethnicity']: ethnicity,
             [age_min !== undefined && 'age_min']: age_min,
             [age_max !== undefined && 'age_max']: age_max,
-            [death !== undefined && 'death']: death
+            [death !== undefined && 'isDeath']: death === "Y" ? true : false
         }
 
         const patients = await Patient.find(obj)
