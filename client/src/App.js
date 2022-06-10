@@ -2,8 +2,9 @@ import React, { useEffect, useState, useContext, useCallback } from 'react';
 import dayjs from 'dayjs';
 import { getPatientList } from './API/API';
 import './App.css';
-import Pagination from './Pagination';
+import Pagination from './sections/Pagination';
 
+import Sorting from './sections/Sorting';
 import Filtering from './sections/Filtering';
 import { PaginationContext } from './context/PaginationContext';
 
@@ -12,9 +13,7 @@ const App = () => {
         setPage,
         length,
         order_column,
-        setOrder_column,
         order_desc,
-        setOrder_desc,
         setTotalLength,
         setShownPagination,
         filters
@@ -44,13 +43,6 @@ const App = () => {
         setShownPagination
     ]);
 
-    const sortColumn = (column, desc) => {
-        setOrder_column(column);
-        setOrder_desc(desc);
-        callGetPatientListAPI(length, 1, column, desc, filters);
-        setShownPagination(0);
-    }
-
     const resetAPI = () => {
         const resetFilters = {
             gender: "",
@@ -63,6 +55,9 @@ const App = () => {
         callGetPatientListAPI(10, 1, null, true, resetFilters);
         setShownPagination(0);
     }
+
+    const toggleSorting = () => null;
+    const toggleFiltering = () => null;
 
     const columnArr = [
         'personID',
@@ -77,7 +72,12 @@ const App = () => {
     return (
         !patientList ? 'Loading...' :
             <div className='table-container'>
-                <button onClick={resetAPI}>초기화</button>
+                <div>
+                    <button onClick={toggleSorting}>정렬</button>
+                    <button onClick={toggleFiltering}>필터</button>
+                    <button onClick={resetAPI}>초기화</button>
+                </div>
+
                 <table>
                     <thead>
                         <tr>
@@ -87,24 +87,10 @@ const App = () => {
 
                         <tr>
                             <th></th>
-                            {
-                                columnArr.map(column => (
-                                    <th key={column}>
-                                        <span onClick={() => sortColumn(column, true)}>
-                                            {
-                                                order_column === column && order_desc === true ?
-                                                    '▼' : '▽'
-                                            }
-                                        </span>
-                                        <span onClick={() => sortColumn(column, false)}>
-                                            {
-                                                order_column === column && order_desc === false ?
-                                                    '▲' : '△'
-                                            }
-                                        </span>
-                                    </th>
-                                ))
-                            }
+                            <Sorting
+                                callGetPatientListAPI={callGetPatientListAPI}
+                                columnArr={columnArr}
+                            />
                         </tr>
 
                         <tr>

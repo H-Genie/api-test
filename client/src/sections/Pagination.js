@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { PaginationContext } from './context/PaginationContext';
+import { PaginationContext } from '../context/PaginationContext';
 
 const Pagination = ({ callGetPatientListAPI }) => {
     const {

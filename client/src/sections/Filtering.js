@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { getGenderList, getRaceList, getEthnicityList } from '../API/API';
-import RadioBox from './RadioBox';
-import CheckBox from './CheckBox';
+import RadioBox from '../utils/RadioBox';
+import CheckBox from '../utils/CheckBox';
 import { PaginationContext } from '../context/PaginationContext';
 
 const Filtering = () => {
