@@ -6,6 +6,7 @@ import Pagination from './sections/Pagination';
 
 import Sorting from './sections/Sorting';
 import Filtering from './sections/Filtering';
+import Patient from './sections/Patient';
 import { PaginationContext } from './context/PaginationContext';
 
 const App = () => {
@@ -60,6 +61,11 @@ const App = () => {
 
     const toggleSorting = () => setIsOpenedSorting(!isOpenedSorting);
     const toggleFiltering = () => setIsOpenedFiltering(!isOpenedFiltering);
+    const toggleDisplay = personID => {
+        const isOpened = document.getElementById(personID).style.display;
+        if (isOpened === 'none') document.getElementById(personID).style.display = "table-row";
+        else document.getElementById(personID).style.display = "none";
+    }
 
     const columnArr = [
         'personID',
@@ -68,7 +74,7 @@ const App = () => {
         'gender',
         'ethnicity',
         'race',
-        'isDeatth'
+        'isDeath'
     ]
 
     return (
@@ -84,12 +90,12 @@ const App = () => {
                     <thead>
                         <tr>
                             <th>No.</th>
-                            {columnArr.map(column => <th key={column}>{column}</th>)}
+                            {columnArr.map(column => <th key={column} className={column}>{column}</th>)}
                         </tr>
 
                         {
                             isOpenedSorting &&
-                            <tr>
+                            <tr style={{ backgroundColor: '#eee' }}>
                                 <th></th>
                                 <Sorting
                                     callGetPatientListAPI={callGetPatientListAPI}
@@ -100,7 +106,7 @@ const App = () => {
 
                         {
                             isOpenedFiltering &&
-                            <tr>
+                            <tr style={{ backgroundColor: '#eee' }}>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -114,16 +120,19 @@ const App = () => {
                         {
                             patientList &&
                             patientList.map((patient, index) => (
-                                <tr key={patient.personID} onClick={e => console.log(patient.personID)}>
-                                    <td>{index + 1}</td>
-                                    <td>{patient.personID}</td>
-                                    <td>{patient.age}</td>
-                                    <td>{dayjs(patient.birthDatetime).format("YYYY-MM-DD")}</td>
-                                    <td>{patient.gender}</td>
-                                    <td>{patient.ethnicity}</td>
-                                    <td>{patient.race}</td>
-                                    <td>{patient.isDeath ? "Y" : "N"}</td>
-                                </tr>
+                                <React.Fragment key={patient.personID}>
+                                    <tr onClick={() => toggleDisplay(patient.personID)}>
+                                        <td>{index + 1}</td>
+                                        <td>{patient.personID}</td>
+                                        <td>{patient.age}</td>
+                                        <td>{dayjs(patient.birthDatetime).format("YYYY-MM-DD")}</td>
+                                        <td>{patient.gender}</td>
+                                        <td>{patient.ethnicity}</td>
+                                        <td>{patient.race}</td>
+                                        <td>{patient.isDeath ? "Y" : "N"}</td>
+                                    </tr>
+                                    <Patient personID={patient.personID} />
+                                </React.Fragment>
                             ))
                         }
                     </tbody>

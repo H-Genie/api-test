@@ -27,25 +27,25 @@ export const getPatientList = (
 }
 
 export const getPatientBrief = personID => {
-    return axios.get(`${host}/brief/${personID}`)
+    return axios.get(`${host}/patient/${personID}`)
         .then(res => res.data)
         .catch(e => console.log(e));
 }
 
 export const getPatientCondition = personID => {
-    return axios.get(`${host}/brief/${personID}/condition`)
+    return axios.get(`${host}/patient/${personID}/condition`)
         .then(res => res.data)
         .catch(e => console.log(e));
 }
 
 export const getPatientDrug = personID => {
-    return axios.get(`${host}/brief/${personID}/drug`)
+    return axios.get(`${host}/patient/${personID}/drug`)
         .then(res => res.data)
         .catch(e => console.log(e));
 }
 
 export const getPatientVisit = personID => {
-    return axios.get(`${host}/brief/${personID}/visit`)
+    return axios.get(`${host}/patient/${personID}/visit`)
         .then(res => res.data)
         .catch(e => console.log(e));
 }

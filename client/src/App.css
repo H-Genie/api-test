@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 table {
     border-collapse: collapse;
 }
@@ -12,6 +16,27 @@ td {
 th div {
     display: flex;
     justify-content: flex-start;
+    align-items: center;
+}
+
+.patient-brief {
+    text-align: start;
+}
+
+.personID {
+    width: 103px;
+}
+
+.age {
+    width: 65px;
+}
+
+.ethnicity {
+    width: 146px;
+}
+
+.race {
+    width: 102px;
 }
 
 ul {
