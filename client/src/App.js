@@ -51,6 +51,19 @@ const App = () => {
         setShownPagination(0);
     }
 
+    const resetAPI = () => {
+        const resetFilters = {
+            gender: "",
+            race: [],
+            ethnicity: "",
+            age_min: "",
+            age_max: "",
+            death: ""
+        }
+        callGetPatientListAPI(10, 1, null, true, resetFilters);
+        setShownPagination(0);
+    }
+
     const columnArr = [
         'personID',
         'age',
@@ -65,6 +78,7 @@ const App = () => {
         !patientList ? 'Loading...' :
             <div className='table-container'>
                 <Filtering />
+                <button onClick={resetAPI}>초기화</button>
                 <table>
                     <thead>
                         <tr>

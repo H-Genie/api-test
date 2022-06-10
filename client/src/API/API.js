@@ -55,3 +55,21 @@ export const getStat = () => {
         .then(res => res.data)
         .catch(e => console.log(e));
 }
+
+export const getGenderList = () => {
+    return axios.get(`${host}/list/gender`)
+        .then(res => res.data)
+        .catch(e => console.log(e));
+}
+
+export const getRaceList = () => {
+    return axios.get(`${host}/list/race`)
+        .then(res => res.data)
+        .catch(e => console.log(e));
+}
+
+export const getEthnicityList = () => {
+    return axios.get(`${host}/list/ethnicity`)
+        .then(res => res.data)
+        .catch(e => console.log(e));
+}
