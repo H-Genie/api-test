@@ -9,6 +9,11 @@ td {
     padding: 1rem;
 }
 
+th div {
+    display: flex;
+    justify-content: flex-start;
+}
+
 ul {
     margin: 0;
 }

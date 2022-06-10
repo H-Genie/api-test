@@ -77,7 +77,6 @@ const App = () => {
     return (
         !patientList ? 'Loading...' :
             <div className='table-container'>
-                <Filtering />
                 <button onClick={resetAPI}>초기화</button>
                 <table>
                     <thead>
@@ -87,10 +86,10 @@ const App = () => {
                         </tr>
 
                         <tr>
-                            <td></td>
+                            <th></th>
                             {
                                 columnArr.map(column => (
-                                    <td key={column}>
+                                    <th key={column}>
                                         <span onClick={() => sortColumn(column, true)}>
                                             {
                                                 order_column === column && order_desc === true ?
@@ -103,12 +102,18 @@ const App = () => {
                                                     '▲' : '△'
                                             }
                                         </span>
-                                    </td>
+                                    </th>
                                 ))
                             }
                         </tr>
 
-
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <Filtering />
+                        </tr>
                     </thead>
 
                     <tbody>

@@ -2,7 +2,7 @@ import React from 'react';
 
 const RadioBox = ({ category, list, handleFilters }) => {
     const renderRadioboxLists = () => list && list.map(item => (
-        <React.Fragment key={item.key}>
+        <div key={item.key}>
             <input
                 type="radio"
                 value={item.value}
@@ -12,7 +12,7 @@ const RadioBox = ({ category, list, handleFilters }) => {
             <label htmlFor={item.value}>
                 {item.value}
             </label>
-        </React.Fragment>
+        </div>
     ));
 
     const handleChange = e => handleFilters(e.target.value, category);

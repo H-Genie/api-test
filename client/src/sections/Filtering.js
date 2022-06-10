@@ -51,37 +51,45 @@ const Filtering = () => {
     }
 
     return (
-        <div>
-            <RadioBox
-                category="gender"
-                list={genders}
-                handleFilters={handleFilters}
-            />
-            <CheckBox
-                category="race"
-                list={races}
-                handleFilters={handleFilters}
-            />
-            <RadioBox
-                category="ethnicity"
-                list={ethnicities}
-                handleFilters={handleFilters}
-            />
-            <RadioBox
-                category="death"
-                list={[
-                    {
-                        "key": 1,
-                        "value": "Y"
-                    },
-                    {
-                        "key": 2,
-                        "value": "N"
-                    }
-                ]}
-                handleFilters={handleFilters}
-            />
-        </div>
+        <>
+            <th>
+                <RadioBox
+                    category="gender"
+                    list={genders}
+                    handleFilters={handleFilters}
+                />
+            </th>
+            <th>
+                <RadioBox
+                    category="ethnicity"
+                    list={ethnicities}
+                    handleFilters={handleFilters}
+                />
+            </th>
+            <th>
+                <CheckBox
+                    category="race"
+                    list={races}
+                    handleFilters={handleFilters}
+                />
+            </th>
+            <th>
+                <RadioBox
+                    category="death"
+                    list={[
+                        {
+                            "key": 1,
+                            "value": "Y"
+                        },
+                        {
+                            "key": 2,
+                            "value": "N"
+                        }
+                    ]}
+                    handleFilters={handleFilters}
+                />
+            </th>
+        </>
     )
 }
 

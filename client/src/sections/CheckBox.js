@@ -4,7 +4,7 @@ const CheckBox = ({ category, list, handleFilters }) => {
     const [checked, setChecked] = useState([]);
 
     const renderCheckboxLists = () => list && list.map(item => (
-        <React.Fragment key={item.key}>
+        <div key={item.key}>
             <input
                 type="checkbox"
                 value={item.value}
@@ -14,7 +14,7 @@ const CheckBox = ({ category, list, handleFilters }) => {
             <label htmlFor={item.value}>
                 {item.value}
             </label>
-        </React.Fragment>
+        </div>
     ));
 
     const handleToggle = value => {
