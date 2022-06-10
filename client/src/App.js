@@ -18,6 +18,8 @@ const App = () => {
         setShownPagination,
         filters
     } = useContext(PaginationContext);
+    const [isOpenedSorting, setIsOpenedSorting] = useState(false);
+    const [isOpenedFiltering, setIsOpenedFiltering] = useState(false)
 
     const [patientList, setPatientList] = useState(null);
     const callGetPatientListAPI = useCallback(
@@ -56,8 +58,8 @@ const App = () => {
         setShownPagination(0);
     }
 
-    const toggleSorting = () => null;
-    const toggleFiltering = () => null;
+    const toggleSorting = () => setIsOpenedSorting(!isOpenedSorting);
+    const toggleFiltering = () => setIsOpenedFiltering(!isOpenedFiltering);
 
     const columnArr = [
         'personID',
@@ -72,7 +74,7 @@ const App = () => {
     return (
         !patientList ? 'Loading...' :
             <div className='table-container'>
-                <div>
+                <div className='button-container'>
                     <button onClick={toggleSorting}>정렬</button>
                     <button onClick={toggleFiltering}>필터</button>
                     <button onClick={resetAPI}>초기화</button>
@@ -85,21 +87,27 @@ const App = () => {
                             {columnArr.map(column => <th key={column}>{column}</th>)}
                         </tr>
 
-                        <tr>
-                            <th></th>
-                            <Sorting
-                                callGetPatientListAPI={callGetPatientListAPI}
-                                columnArr={columnArr}
-                            />
-                        </tr>
+                        {
+                            isOpenedSorting &&
+                            <tr>
+                                <th></th>
+                                <Sorting
+                                    callGetPatientListAPI={callGetPatientListAPI}
+                                    columnArr={columnArr}
+                                />
+                            </tr>
+                        }
 
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <Filtering />
-                        </tr>
+                        {
+                            isOpenedFiltering &&
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <Filtering />
+                            </tr>
+                        }
                     </thead>
 
                     <tbody>
