@@ -1,10 +1,12 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { getPatientBrief } from '../API/API'
+import React, { useEffect, useState, useCallback, useContext } from 'react';
+import { PaginationContext } from '../context/PaginationContext';
+import { getPatientBrief } from '../API/API';
 
-const Patient = ({ personID, toggle }) => {
+const Patient = ({ personID }) => {
     const [conditionList, setConditionList] = useState(null);
     const [visitCount, setVisitCount] = useState(null);
     const [isOpened, setIsOpened] = useState(false);
+    const { toggledPatient } = useContext(PaginationContext)
 
     const callPatientBriefAPI = useCallback(async () => {
         await getPatientBrief(personID)
@@ -15,9 +17,10 @@ const Patient = ({ personID, toggle }) => {
     }, [personID]);
 
     useEffect(() => {
-        if (toggle && isOpened === false) setIsOpened(true)
-        if (toggle && isOpened) callPatientBriefAPI();
-    }, [callPatientBriefAPI, isOpened, toggle]);
+        const checked = toggledPatient.includes(personID);
+        if (checked) setIsOpened(true);
+        if (checked && isOpened) callPatientBriefAPI();
+    }, [callPatientBriefAPI, isOpened, personID, toggledPatient]);
 
     return (
         <tr id={personID} style={{ display: 'none' }}>

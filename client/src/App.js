@@ -141,7 +141,6 @@ const App = () => {
                                     </tr>
                                     <Patient
                                         personID={patient.personID}
-                                        toggle={toggledPatient.includes(patient.personID) && true}
                                     />
                                 </React.Fragment>
                             ))
