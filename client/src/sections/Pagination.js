@@ -13,7 +13,8 @@ const Pagination = ({ callGetPatientListAPI }) => {
         setNewLength,
         shownPagination,
         setShownPagination,
-        filters
+        filters,
+        setToggledPatient
     } = useContext(PaginationContext);
 
     const changeLength = e => {
@@ -26,6 +27,7 @@ const Pagination = ({ callGetPatientListAPI }) => {
         setLength(value);
         callGetPatientListAPI(value, 1, order_column, order_desc, filters);
         setShownPagination(0);
+        setToggledPatient([]);
     }
 
     const validatNumber = e => setNewLength(Math.min(e.target.value.replace(/[^0-9]/g, ''), totalLength));
@@ -40,6 +42,7 @@ const Pagination = ({ callGetPatientListAPI }) => {
                 onClick={() => {
                     setShownPagination(shownPagination - 10);
                     callGetPatientListAPI(length, shownPagination - 9, order_column, order_desc, filters);
+                    setToggledPatient([]);
                 }}
             >
                 ←
@@ -50,7 +53,10 @@ const Pagination = ({ callGetPatientListAPI }) => {
             arr.push(
                 <li
                     key={i + 1}
-                    onClick={() => { callGetPatientListAPI(length, i + 1, order_column, order_desc, filters) }}
+                    onClick={() => {
+                        callGetPatientListAPI(length, i + 1, order_column, order_desc, filters);
+                        setToggledPatient([]);
+                    }}
                     style={{
                         color: i + 1 === page ? 'blue' : null,
                         textDecoration: i + 1 === page ? 'underline' : null
@@ -67,6 +73,7 @@ const Pagination = ({ callGetPatientListAPI }) => {
                 onClick={() => {
                     setShownPagination(shownPagination + 10);
                     callGetPatientListAPI(length, shownPagination + 11, order_column, order_desc, filters);
+                    setToggledPatient([]);
                 }}
             >
                 →

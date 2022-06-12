@@ -8,6 +8,7 @@ export const PaginationProvider = ({ children }) => {
         callListAPI();
     }, []);
 
+    // Pagination
     const [page, setPage] = useState(1);
     const [length, setLength] = useState(10);
     const [order_column, setOrder_column] = useState(null);
@@ -25,6 +26,7 @@ export const PaginationProvider = ({ children }) => {
         death: ""
     });
 
+    // filtering
     const [genders, setGenders] = useState(null);
     const [races, setRaces] = useState(null);
     const [ethnicities, setEthnicities] = useState(null);
@@ -54,6 +56,9 @@ export const PaginationProvider = ({ children }) => {
         ]);
     }
 
+    // Toggle
+    const [toggledPatient, setToggledPatient] = useState([]);
+
     return <PaginationContext.Provider
         value={{
             page,
@@ -74,7 +79,9 @@ export const PaginationProvider = ({ children }) => {
             setFilters,
             genders,
             races,
-            ethnicities
+            ethnicities,
+            toggledPatient,
+            setToggledPatient
         }}
     >
         {children}

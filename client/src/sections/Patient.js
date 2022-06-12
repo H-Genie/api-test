@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { getPatientBrief } from '../API/API'
 
-const Patient = ({ personID }) => {
+const Patient = ({ personID, toggle }) => {
     const [conditionList, setConditionList] = useState(null);
     const [visitCount, setVisitCount] = useState(null);
+    const [isOpened, setIsOpened] = useState(false);
 
     const callPatientBriefAPI = useCallback(async () => {
         await getPatientBrief(personID)
@@ -14,8 +15,9 @@ const Patient = ({ personID }) => {
     }, [personID]);
 
     useEffect(() => {
-        callPatientBriefAPI();
-    }, [callPatientBriefAPI]);
+        if (toggle && isOpened === false) setIsOpened(true)
+        if (toggle && isOpened) callPatientBriefAPI();
+    }, [callPatientBriefAPI, isOpened, toggle]);
 
     return (
         <tr id={personID} style={{ display: 'none' }}>

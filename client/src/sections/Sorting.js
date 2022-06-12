@@ -9,7 +9,8 @@ const Sorting = ({ callGetPatientListAPI, columnArr }) => {
         filters,
         length,
         order_column,
-        order_desc
+        order_desc,
+        setToggledPatient
     } = useContext(PaginationContext);
 
     const sortColumn = (column, desc) => {
@@ -17,6 +18,7 @@ const Sorting = ({ callGetPatientListAPI, columnArr }) => {
         setOrder_desc(desc);
         callGetPatientListAPI(length, 1, column, desc, filters);
         setShownPagination(0);
+        setToggledPatient([]);
     }
 
     return (

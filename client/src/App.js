@@ -17,7 +17,9 @@ const App = () => {
         order_desc,
         setTotalLength,
         setShownPagination,
-        filters
+        filters,
+        toggledPatient,
+        setToggledPatient
     } = useContext(PaginationContext);
     const [isOpenedSorting, setIsOpenedSorting] = useState(false);
     const [isOpenedFiltering, setIsOpenedFiltering] = useState(false)
@@ -37,31 +39,37 @@ const App = () => {
     useEffect(() => {
         callGetPatientListAPI(length, 1, order_column, order_desc, filters);
         setShownPagination(0);
+        setToggledPatient([]);
     }, [
         callGetPatientListAPI,
         filters,
         length,
         order_column,
         order_desc,
-        setShownPagination
+        setShownPagination,
+        setToggledPatient
     ]);
 
-    const resetAPI = () => {
-        const resetFilters = {
-            gender: "",
-            race: [],
-            ethnicity: "",
-            age_min: "",
-            age_max: "",
-            death: ""
-        }
-        callGetPatientListAPI(10, 1, null, true, resetFilters);
-        setShownPagination(0);
-    }
+    // const resetAPI = () => {
+    //     const resetFilters = {
+    //         gender: "",
+    //         race: [],
+    //         ethnicity: "",
+    //         age_min: "",
+    //         age_max: "",
+    //         death: ""
+    //     }
+    //     callGetPatientListAPI(10, 1, null, true, resetFilters);
+    //     setShownPagination(0);
+    //     setToggledPatient([]);
+    // }
 
     const toggleSorting = () => setIsOpenedSorting(!isOpenedSorting);
     const toggleFiltering = () => setIsOpenedFiltering(!isOpenedFiltering);
     const toggleDisplay = personID => {
+        const chekced = toggledPatient.includes(personID);
+        if (!chekced) setToggledPatient([...toggledPatient, personID]);
+
         const isOpened = document.getElementById(personID).style.display;
         if (isOpened === 'none') document.getElementById(personID).style.display = "table-row";
         else document.getElementById(personID).style.display = "none";
@@ -83,7 +91,7 @@ const App = () => {
                 <div className='button-container'>
                     <button onClick={toggleSorting}>정렬</button>
                     <button onClick={toggleFiltering}>필터</button>
-                    <button onClick={resetAPI}>초기화</button>
+                    {/* <button onClick={resetAPI}>초기화</button> */}
                 </div>
 
                 <table>
@@ -131,7 +139,10 @@ const App = () => {
                                         <td>{patient.race}</td>
                                         <td>{patient.isDeath ? "Y" : "N"}</td>
                                     </tr>
-                                    <Patient personID={patient.personID} />
+                                    <Patient
+                                        personID={patient.personID}
+                                        toggle={toggledPatient.includes(patient.personID) && true}
+                                    />
                                 </React.Fragment>
                             ))
                         }
