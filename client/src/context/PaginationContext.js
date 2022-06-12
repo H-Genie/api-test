@@ -1,8 +1,13 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
+import { getGenderList, getRaceList, getEthnicityList } from '../API/API';
 
 export const PaginationContext = createContext();
 
 export const PaginationProvider = ({ children }) => {
+    useEffect(() => {
+        callListAPI();
+    }, []);
+
     const [page, setPage] = useState(1);
     const [length, setLength] = useState(10);
     const [order_column, setOrder_column] = useState(null);
@@ -19,6 +24,35 @@ export const PaginationProvider = ({ children }) => {
         age_max: "",
         death: ""
     });
+
+    const [genders, setGenders] = useState(null);
+    const [races, setRaces] = useState(null);
+    const [ethnicities, setEthnicities] = useState(null);
+
+    const callListAPI = async () => {
+        const makeFilterArray = arr => {
+            let resultArr = [];
+            arr.map((item, index) => (
+                resultArr.push({
+                    "key": index + 1,
+                    "value": item
+                })
+            ));
+            return resultArr;
+        }
+
+        await Promise.all([
+            getGenderList()
+                .then(res => makeFilterArray(res))
+                .then(res => setGenders(res)),
+            getRaceList()
+                .then(res => makeFilterArray(res))
+                .then(res => setRaces(res)),
+            getEthnicityList()
+                .then(res => makeFilterArray(res))
+                .then(res => setEthnicities(res))
+        ]);
+    }
 
     return <PaginationContext.Provider
         value={{
@@ -37,7 +71,10 @@ export const PaginationProvider = ({ children }) => {
             shownPagination,
             setShownPagination,
             filters,
-            setFilters
+            setFilters,
+            genders,
+            races,
+            ethnicities
         }}
     >
         {children}
