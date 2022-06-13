@@ -19,6 +19,14 @@ th div {
     align-items: center;
 }
 
+.button-container {
+    text-align: right;
+}
+
+.button-container * {
+    margin: 0 0 10px 10px;
+}
+
 .patient-brief {
     text-align: start;
 }
@@ -28,7 +36,7 @@ th div {
 }
 
 .age {
-    width: 65px;
+    width: 96px;
 }
 
 .ethnicity {
@@ -37,6 +45,19 @@ th div {
 
 .race {
     width: 102px;
+}
+
+.age-filter {
+    display: flex;
+    flex-direction: column;
+}
+
+.age-filter label {
+    width: 33px;
+}
+
+.age-filter input {
+    width: 30px;
 }
 
 ul {
@@ -63,7 +84,7 @@ ul {
 }
 
 .pagination input {
-    width: 53px;
+    width: 61px;
     height: 18px;
     text-align: center;
 }

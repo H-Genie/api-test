@@ -12,7 +12,7 @@ export const PaginationProvider = ({ children }) => {
     const [page, setPage] = useState(1);
     const [length, setLength] = useState(10);
     const [order_column, setOrder_column] = useState(null);
-    const [order_desc, setOrder_desc] = useState(true);
+    const [order_desc, setOrder_desc] = useState(null);
 
     const [totalLength, setTotalLength] = useState(null);
     const [newLength, setNewLength] = useState(10);

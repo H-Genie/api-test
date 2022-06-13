@@ -17,20 +17,26 @@ patientRouter.get('/', async (req, res) => {
             death
         } = req.query;
 
-        let obj = {
+        let ageQuery = {};
+        if (age_min !== undefined) ageQuery.$gte = parseInt(age_min);
+        if (age_max !== undefined) ageQuery.$lte = parseInt(age_max);
+
+        const query = {
             [gender !== undefined && 'gender']: gender,
             [race !== undefined && 'race']: { $in: race && race.split(',') },
             [ethnicity !== undefined && 'ethnicity']: ethnicity,
-            [age_min !== undefined && 'age_min']: age_min,
-            [age_max !== undefined && 'age_max']: age_max,
+            [Object.keys(ageQuery).length !== 0 && 'age']: ageQuery,
             [death !== undefined && 'isDeath']: death === "Y" ? true : false
         }
+        const sort = order_column && {
+            [order_column]: order_desc
+        }
 
-        const patients = await Patient.find(obj)
-            .sort({ [order_column]: order_desc })
+        const patients = await Patient.find(query)
+            .sort(sort)
             .skip(length * page)
             .limit(length);
-        const totalLength = await Patient.find(obj).countDocuments();
+        const totalLength = await Patient.find(query).countDocuments();
 
         return res.send({ patients, page: parseInt(page) + 1, totalLength });
     } catch (err) {

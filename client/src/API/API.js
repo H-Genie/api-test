@@ -20,8 +20,9 @@ export const getPatientList = (
         age_max,
         death
     } = filters;
+    const descBoolean = order_desc === true ? -1 : 1;
 
-    return axios.get(`${host}/patient?length=${length}&page=${page - 1}&order_column=${order_column}&order_desc=${order_desc ? -1 : 1}${gender ? '&gender=' + gender : ''}${race.length !== 0 ? '&race=' + race : ''}${ethnicity ? '&ethnicity=' + ethnicity : ''}${age_min ? '&age_min=' + age_min : ''}${age_max ? '&age_max=' + age_max : ''}${death ? '&death=' + death : ''}`)
+    return axios.get(`${host}/patient?length=${length}&page=${page - 1}${order_column ? '&order_column=' + order_column : ''}${order_desc ? '&order_desc=' + descBoolean : ''}${gender ? '&gender=' + gender : ''}${race.length !== 0 ? '&race=' + race : ''}${ethnicity ? '&ethnicity=' + ethnicity : ''}${age_min ? '&age_min=' + age_min : ''}${age_max ? '&age_max=' + age_max : ''}${death ? '&death=' + death : ''}`)
         .then(res => res.data)
         .catch(e => console.log(e));
 }

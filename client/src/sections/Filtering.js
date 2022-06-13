@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import RadioBox from '../utils/RadioBox';
 import CheckBox from '../utils/CheckBox';
+import FilteringAge from './FilteringAge';
 import { PaginationContext } from '../context/PaginationContext';
 
 const Filtering = () => {
@@ -21,6 +22,10 @@ const Filtering = () => {
 
     return (
         <>
+            <th>
+                <FilteringAge />
+            </th>
+            <th></th>
             <th>
                 <RadioBox
                     category="gender"

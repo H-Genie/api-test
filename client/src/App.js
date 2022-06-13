@@ -117,8 +117,8 @@ const App = () => {
                             <tr style={{ backgroundColor: '#eee' }}>
                                 <th></th>
                                 <th></th>
-                                <th></th>
-                                <th></th>
+                                {/* <th></th>
+                                <th></th> */}
                                 <Filtering />
                             </tr>
                         }
