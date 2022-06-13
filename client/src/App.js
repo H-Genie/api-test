@@ -117,8 +117,6 @@ const App = () => {
                             <tr style={{ backgroundColor: '#eee' }}>
                                 <th></th>
                                 <th></th>
-                                {/* <th></th>
-                                <th></th> */}
                                 <Filtering />
                             </tr>
                         }
@@ -141,6 +139,7 @@ const App = () => {
                                     </tr>
                                     <Patient
                                         personID={patient.personID}
+                                        toggle={toggledPatient.includes(patient.personID) && true}
                                     />
                                 </React.Fragment>
                             ))
