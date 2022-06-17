@@ -16,6 +16,7 @@ const Pagination = ({ callGetPatientListAPI }) => {
         filters,
         setToggledPatient
     } = useContext(PaginationContext);
+    console.log(page)
 
     const changeLength = e => {
         e.preventDefault();
@@ -54,12 +55,14 @@ const Pagination = ({ callGetPatientListAPI }) => {
                 <li
                     key={i + 1}
                     onClick={() => {
+                        if (page === i + 1) return;
                         callGetPatientListAPI(length, i + 1, order_column, order_desc, filters);
                         setToggledPatient([]);
                     }}
                     style={{
                         color: i + 1 === page ? 'blue' : null,
-                        textDecoration: i + 1 === page ? 'underline' : null
+                        textDecoration: i + 1 === page ? 'underline' : null,
+                        cursor: i + 1 === page ? 'inherit' : 'pointer'
                     }}
                 >
                     {i + 1}
