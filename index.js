@@ -1,3 +1,6 @@
+// node.js
+const path = require('path');
+
 // express
 const express = require('express');
 const app = express();
@@ -14,7 +17,7 @@ const server = async () => {
     try {
 
         await mongoose.connect(MONGO_URI);
-        await mongoose.set("debug", true);
+        // await mongoose.set("debug", true);
         console.log('MongoDB connected');
 
         // middleware
@@ -22,7 +25,13 @@ const server = async () => {
             res.header("Access-Control-Allow-Origin", "*");
             next();
         });
+        app.use(express.static("client/build"));
         app.use(express.json());
+
+        // router
+        app.get("/", (req, res) => {
+            res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+        });
         app.use('/patient', patientRouter);
         app.use('/stat', statRouter);
         app.use('/list', listRouter);
