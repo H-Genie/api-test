@@ -8,7 +8,7 @@ const CheckBox = ({ category, list, handleFilters }) => {
             <input
                 type="checkbox"
                 value={item.value}
-                id={item.key}
+                id={item.value}
                 onChange={() => handleToggle(item.value)}
             />
             <label htmlFor={item.value}>

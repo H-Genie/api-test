@@ -103,7 +103,7 @@ const App = () => {
 
                         {
                             isOpenedSorting &&
-                            <tr style={{ backgroundColor: '#eee' }}>
+                            <tr className='sorting'>
                                 <th></th>
                                 <Sorting
                                     callGetPatientListAPI={callGetPatientListAPI}
@@ -114,7 +114,7 @@ const App = () => {
 
                         {
                             isOpenedFiltering &&
-                            <tr style={{ backgroundColor: '#eee' }}>
+                            <tr className='filtering'>
                                 <th></th>
                                 <th></th>
                                 <Filtering />
